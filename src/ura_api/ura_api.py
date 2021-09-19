@@ -124,7 +124,6 @@ class ura_api:
         return ret_value
 
     ## Planning Decisions
-
     def planning_decisions(self, year=None, last_dnload_date=None):
         ret_value = None
 
@@ -144,7 +143,6 @@ class ura_api:
         return ret_value
 
     ## Approved Use
-
     def approved_residential_use(self, blkHouseNo, street, storeyNo=None, unitNo=None):
         ret_value = None
         if self._myobj:
@@ -154,9 +152,11 @@ class ura_api:
                 url += f'&storeyNo={storeyNo}'
             if unitNo:
                 url += f'&unitNo={unitNo}'
- 
+            
+            print(url)
             resp = requests.post(url, headers=self._myobj)
-            ret_value = resp.json()['Result']
+            print(resp.json())
+            ret_value = resp.json()['isResiUse']
 
         return ret_value
 
