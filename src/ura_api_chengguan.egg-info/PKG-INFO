@@ -1,0 +1,34 @@
+Metadata-Version: 2.1
+Name: ura-api-chengguan
+Version: 0.0.1
+Summary: A python wrapper to URA APIs.
+Home-page: https://github.com/chengguan/ura_api
+Author: Teo Cheng Guan
+Author-email: chengguan.teo@gmail.com
+License: UNKNOWN
+Project-URL: Bug Tracker, https://github.com/chengguan/ura_api/issues
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# URA Token Package
+
+This is a python wrapper to URA APIs. 
+
+## Register for your access key with [URA](https://www.ura.gov.sg/maps/api/reg.html)
+
+## Example:
+```python
+from ura_api import ura_api
+
+ura = ura_api.ura_api('<place valid access key here>')
+ura.car_pack_available_lots()
+```
+
+Questions or bugs, please write to chengguan.teo@gmail.com.
+
+
