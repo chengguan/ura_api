@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: ura-api
-Version: 0.0.3
+Version: 0.0.6
 Summary: A python wrapper to URA APIs.
 Home-page: https://github.com/chengguan/ura_api
 Author: Teo Cheng Guan

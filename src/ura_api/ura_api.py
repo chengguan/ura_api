@@ -146,16 +146,14 @@ class ura_api:
     def approved_residential_use(self, blkHouseNo, street, storeyNo=None, unitNo=None):
         ret_value = None
         if self._myobj:
-            url = f'{self._base_url}EAU_Appr_Resi_Use?blkHouseNo={blkHouseNo}&street={street}'
+            url = f'{self._base_url}EAU_Appr_Resi_Use&blkHouseNo={blkHouseNo}&street={street}'
 
             if storeyNo:
                 url += f'&storeyNo={storeyNo}'
             if unitNo:
                 url += f'&unitNo={unitNo}'
             
-            print(url)
             resp = requests.post(url, headers=self._myobj)
-            print(resp.json())
             ret_value = resp.json()['isResiUse']
 
         return ret_value
