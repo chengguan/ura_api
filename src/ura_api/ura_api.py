@@ -5,33 +5,40 @@
 # Questions or bugs, please write to chengguan.teo@gmail.com.
 import requests
 import json
+import os
 
 from .exception import *
 
 class ura_api:
 
-    def __init__(self, accesskey, verbose=False):
+    def __init__(self, accesskey=os.environ.get('URA_API_ACCESSKEY', ''), verbose=False):
         self._myobj = None
         self._base_url = 'https://www.ura.gov.sg/uraDataService/invokeUraDS?service='
 
+        if accesskey == "":
+            print("URA Accesskey is needed.")
+            exit(1)
+
         url = 'https://www.ura.gov.sg/uraDataService/insertNewToken.action'
-        myobj = {'AccessKey': accesskey, 'User-Agent': 'Mozilla/5.0'}
+        myobj = {
+            'AccessKey': accesskey,
+            'User-Agent': 'Mozilla/5.0'
+        }
 
-        # Place the access key in the request header and send.
-        resp = requests.post(url, headers=myobj)
-
-        if (resp.status_code==200):
-            try:
+        try:
+            # Place the access key in the request header and send.
+            resp = requests.post(url, headers=myobj)
+            if (resp.status_code==200):
                 result = resp.json()['Result']
                 self._myobj = {'AccessKey': accesskey, 'token': result, 'User-Agent': 'Mozilla/5.0'}
-            except:
+            else:
                 raise AuthenticateError
                 if verbose:
-                    print(f'{resp.text}') # print error msg (should the resp data structure changed...)
-        else:
+                    print(f'{resp.status_code=}: {resp.text}') # print error msg
+        except:
             raise AuthenticateError
             if verbose:
-                print(f'{resp.status_code=}: {resp.text}') # print error msg
+                print(f'{resp.text}') # print error msg (should the resp data structure changed...)
 
     ## Car Park
     def car_pack_available_lots(self):
@@ -81,8 +88,8 @@ class ura_api:
 
         return ret_value
 
-    # Data are available for download by reference quarter. 
-    # Period field is in format of yyqq e.g. 14q1 represents 2014 1st quarter. 
+    # Data are available for download by reference quarter.
+    # Period field is in format of yyqq e.g. 14q1 represents 2014 1st quarter.
     def private_residential_properties_rental_contract(self, period):
         ret_value = None
         if self._myobj:
@@ -92,14 +99,14 @@ class ura_api:
 
         return ret_value
 
-    # This data service will return past 3 years of prices of completed and 
-    # uncompleted private residential units and executive condominiums with 
+    # This data service will return past 3 years of prices of completed and
+    # uncompleted private residential units and executive condominiums with
     # pre-requisite for sale sold by developers in JSON format.
     #
-    # Update Frequency: End of day of every 15th of the month. If it is a public 
+    # Update Frequency: End of day of every 15th of the month. If it is a public
     # holiday, the data will be updated on the following working day.
     #
-    # Data are available for download by reference quarter. 
+    # Data are available for download by reference quarter.
     # Period field is in format of mmyy e.g. 0913 represents Sep 2013.
     def private_residential_property_units_sold_by_developers(self, period):
         ret_value = None
@@ -112,7 +119,7 @@ class ura_api:
 
     # This data service will return the latest quarter of project pipeline data in JSON format.
     #
-    # Update Frequency: End of day of every 4th Friday of January, April, July and October. 
+    # Update Frequency: End of day of every 4th Friday of January, April, July and October.
     # If it is a public holiday, the data will be updated on the following working day.
     def private_residential_projects_in_the_pipeline(self):
         ret_value = None
@@ -136,7 +143,7 @@ class ura_api:
                 url = f'{self._base_url}Planning_Decision&last_dnload_date={last_dnload_date}'
             else:
                 url = f'{self._base_url}Planning_Decision'
-            
+
             resp = requests.post(url, headers=self._myobj)
             ret_value = resp.json()['Result']
 
@@ -152,11 +159,8 @@ class ura_api:
                 url += f'&storeyNo={storeyNo}'
             if unitNo:
                 url += f'&unitNo={unitNo}'
-            
+
             resp = requests.post(url, headers=self._myobj)
             ret_value = resp.json()['isResiUse']
 
         return ret_value
-
-
-
