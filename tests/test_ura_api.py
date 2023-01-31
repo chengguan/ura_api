@@ -1,7 +1,7 @@
 import unittest
 from ura_api import ura_api
 
-ACCESS_KEY = 'e3e86532-1c14-465c-a981-5e9295118ea7'
+ACCESS_KEY = '<Your access key here>'
 
 class TestURAAPI(unittest.TestCase):
 
